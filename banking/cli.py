@@ -26,29 +26,31 @@ class CLI:
             else:
                 print("Invalid option. Please select T, I, P or Q.")
 
-    def handle_transactions(self):
-        print("Please enter transaction details in <Date> <Account> <Type> <Amount> format")
-        print("(or enter blank to go back to main menu):")
-        while True:
-            line = input(">").strip()
-            if line == "":
-                break
-            parts = line.split()
-            if len(parts) != 4:
-                print("Invalid input format. Try again.")
-                continue
-            date, account_id, txn_type, amount_str = parts
-            try:
-                amount = Decimal(amount_str)
-            except InvalidOperation:
-                print("Invalid amount format. Try again.")
-                continue
-            # Call add_transaction and expect a (success, message) tuple
-            success, msg = self.bank.add_transaction(date, account_id, txn_type, amount)
-            if not success:
-                print(msg)  # e.g., "First transaction cannot be withdrawal"
-            else:
-                self.print_account_statement(account_id)
+
+
+def handle_transactions(self):
+    print("Please enter transaction details in <Date> <Account> <Type> <Amount> format")
+    print("(or enter blank to go back to main menu):")
+    while True:
+        line = input(">").strip()
+        if line == "":
+            break
+        parts = line.split()
+        if len(parts) != 4:
+            print("Invalid input format. Try again.")
+            continue
+        date, account_id, txn_type, amount_str = parts
+        try:
+            amount = Decimal(amount_str)
+        except InvalidOperation:
+            print("Invalid amount format. Try again.")
+            continue
+        try:
+            txn = self.bank.add_transaction(date, account_id, txn_type, amount)
+            self.print_account_statement(account_id)
+        except Exception as e:
+            print(e)
+
 
     def handle_interest_rules(self):
         print("Please enter interest rules details in <Date> <RuleId> <Rate in %> format")
