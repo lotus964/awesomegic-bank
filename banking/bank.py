@@ -22,10 +22,25 @@ class Bank:
             self.accounts[account_id] = Account(account_id)
         return self.accounts[account_id]
 
-    def add_transaction(self, date: str, account_id: str, txn_type: str, amount: Decimal) -> Transaction:
+    def add_transaction(self, date: str, account_id: str, txn_type: str, amount: Decimal) -> Tuple[bool, str]:
         account = self._find_or_create_account(account_id)
+
+        # Validation
+        if txn_type == 'W':
+            if len(account.transactions) == 0:
+                return False, "First transaction cannot be withdrawal"
+            if amount <= 0:
+                return False, "Withdrawal amount must be positive"
+            if account.get_balance() < amount:
+                return False, "Insufficient funds"
+        elif txn_type == 'D':
+            if amount <= 0:
+                return False, "Deposit amount must be positive"
+        else:
+            return False, f"Invalid transaction type: {txn_type}"
+
         txn = account.add_transaction(date, txn_type, amount)
-        return txn
+        return True, "Transaction successful"
 
     def add_interest_rule(self, date: str, rule_id: str, rate: Decimal):
         """
