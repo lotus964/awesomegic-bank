@@ -1,7 +1,7 @@
 # cli.py
 
-from bank_app.bank import BankSystem
-from bank_app.transaction import Transaction
+from banking.bank import BankSystem
+from banking.transaction import Transaction
 
 class CLI:
     def __init__(self):
