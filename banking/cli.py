@@ -1,3 +1,7 @@
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from banking.bank import Bank
 from decimal import Decimal, InvalidOperation
 
@@ -125,3 +129,9 @@ class CLI:
         print("| Date     | RuleId | Rate (%) |")
         for r in rules:
             print(f"| {r.date} | {r.rule_id} | {r.rate:8.2f} |")
+
+
+# Entry point to run as script
+if __name__ == "__main__":
+    cli = CLI()
+    cli.run()
