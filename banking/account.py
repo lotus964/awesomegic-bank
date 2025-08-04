@@ -13,7 +13,7 @@ class Account:
         self.transactions: List[Transaction] = []
         # Map date to count of transactions to generate txn id suffix
         self.txn_counter: Dict[str, int] = {}
-        self.balance = Decimal('0.00')
+        self.balance = Decimal('0.00').quantize(Decimal('0.01'))
 
     def _next_txn_id(self, date: str) -> str:
         count = self.txn_counter.get(date, 0) + 1
@@ -24,6 +24,7 @@ class Account:
         """
         Adds a deposit or withdrawal transaction after validation.
         Updates balance accordingly.
+        Raises ValueError for invalid transactions.
         """
         txn_type = txn_type.upper()
         if txn_type not in {'D', 'W'}:
@@ -31,11 +32,11 @@ class Account:
 
         amount = amount.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
         if amount <= 0:
-            raise ValueError("Amount must be greater than zero")
+            raise ValueError("Amount must be positive")
 
         if txn_type == 'W':
             if not self.transactions:
-                raise ValueError("Cannot withdraw from account with zero balance")
+                raise ValueError("First transaction cannot be withdrawal")
             if self.balance - amount < 0:
                 raise ValueError("Withdrawal would cause negative balance")
 
@@ -63,6 +64,7 @@ class Account:
         txn_id = ""  # Interest transactions have empty txn_id as per spec
         txn = Transaction(date=date, txn_id=txn_id, txn_type='I', amount=amount)
         self.transactions.append(txn)
+
         self.balance += amount
         self.balance = self.balance.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
         return txn
@@ -70,7 +72,7 @@ class Account:
     def get_statement(self, year_month: str) -> List[Transaction]:
         """
         Returns list of transactions including interest transactions for the specified year-month.
-        Date format YYYYMM
+        Date format YYYYMM.
         """
         if len(year_month) != 6 or not year_month.isdigit():
             raise ValueError("YearMonth must be in YYYYMM format")
@@ -86,7 +88,7 @@ class Account:
         for txn in sorted(self.transactions, key=lambda t: (t.date, t.txn_id or "")):
             if txn.date > date:
                 break
-            if txn.txn_type == 'D' or txn.txn_type == 'I':
+            if txn.txn_type in ('D', 'I'):
                 balance += txn.amount
             elif txn.txn_type == 'W':
                 balance -= txn.amount
@@ -101,10 +103,4 @@ class Account:
         """
         Returns current balance of the account.
         """
-        balance = Decimal('0.00')
-        for txn in self.transactions:
-            if txn.txn_type in ['D', 'I']:
-                balance += txn.amount
-            elif txn.txn_type == 'W':
-                balance -= txn.amount
-        return balance.quantize(Decimal('0.01'))
+        return self.balance.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)

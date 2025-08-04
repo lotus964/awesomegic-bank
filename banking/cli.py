@@ -26,31 +26,30 @@ class CLI:
             else:
                 print("Invalid option. Please select T, I, P or Q.")
 
+    def handle_transactions(self):
+        print("Please enter transaction details in <Date> <Account> <Type> <Amount> format")
+        print("(or enter blank to go back to main menu):")
+        while True:
+            line = input(">").strip()
+            if line == "":
+                break
+            parts = line.split()
+            if len(parts) != 4:
+                print("Invalid input format. Try again.")
+                continue
+            date, account_id, txn_type, amount_str = parts
+            try:
+                amount = Decimal(amount_str)
+            except InvalidOperation:
+                print("Invalid amount format. Try again.")
+                continue
 
-
-def handle_transactions(self):
-    print("Please enter transaction details in <Date> <Account> <Type> <Amount> format")
-    print("(or enter blank to go back to main menu):")
-    while True:
-        line = input(">").strip()
-        if line == "":
-            break
-        parts = line.split()
-        if len(parts) != 4:
-            print("Invalid input format. Try again.")
-            continue
-        date, account_id, txn_type, amount_str = parts
-        try:
-            amount = Decimal(amount_str)
-        except InvalidOperation:
-            print("Invalid amount format. Try again.")
-            continue
-        try:
-            txn = self.bank.add_transaction(date, account_id, txn_type, amount)
-            self.print_account_statement(account_id)
-        except Exception as e:
-            print(e)
-
+            try:
+                txn = self.bank.add_transaction(date, account_id, txn_type, amount)
+                print(f"Transaction {txn.txn_id} added successfully.")
+                self.print_account_statement(account_id)
+            except Exception as e:
+                print(f"Error: {e}")
 
     def handle_interest_rules(self):
         print("Please enter interest rules details in <Date> <RuleId> <Rate in %> format")
@@ -69,11 +68,10 @@ def handle_transactions(self):
             except InvalidOperation:
                 print("Invalid rate format. Try again.")
                 continue
-            try:
-                self.bank.add_interest_rule(date, rule_id, rate)
+            success, msg = self.bank.add_interest_rule(date, rule_id, rate)
+            print(msg)
+            if success:
                 self.print_interest_rules()
-            except Exception as e:
-                print(f"Error: {e}")
 
     def handle_print_statement(self):
         print("Please enter account and month to generate the statement <Account> <Year><Month>")
@@ -88,18 +86,19 @@ def handle_transactions(self):
                 continue
             account_id, year_month = parts
             try:
-                # Calculate interest for the month first
                 self.bank.calculate_monthly_interest(account_id, year_month)
-                # Print statement
                 self.print_account_statement(account_id, year_month)
             except Exception as e:
                 print(f"Error: {e}")
 
     def print_account_statement(self, account_id: str, year_month: str = None):
         if year_month:
-            transactions = self.bank.get_account_statement(account_id, year_month)
+            try:
+                transactions = self.bank.get_account_statement(account_id, year_month)
+            except Exception as e:
+                print(f"Error: {e}")
+                return
         else:
-            # Print all transactions of the account
             account = self.bank.accounts.get(account_id)
             if not account:
                 print(f"Account {account_id} not found")
@@ -110,7 +109,7 @@ def handle_transactions(self):
         print("| Date     | Txn Id      | Type | Amount | Balance |")
         balance = Decimal('0.00')
         for txn in sorted(transactions, key=lambda t: (t.date, t.txn_id or "")):
-            if txn.txn_type == 'D' or txn.txn_type == 'I':
+            if txn.txn_type in ('D', 'I'):
                 balance += txn.amount
             elif txn.txn_type == 'W':
                 balance -= txn.amount
@@ -119,6 +118,9 @@ def handle_transactions(self):
 
     def print_interest_rules(self):
         rules = self.bank.get_interest_rules()
+        if not rules:
+            print("No interest rules defined.")
+            return
         print("Interest rules:")
         print("| Date     | RuleId | Rate (%) |")
         for r in rules:
