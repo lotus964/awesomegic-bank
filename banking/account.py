@@ -96,3 +96,15 @@ class Account:
         """Returns sorted unique transaction dates."""
         dates = sorted(set(txn.date for txn in self.transactions))
         return dates
+
+    def get_balance(self) -> Decimal:
+        """
+        Returns current balance of the account.
+        """
+        balance = Decimal('0.00')
+        for txn in self.transactions:
+            if txn.txn_type in ['D', 'I']:
+                balance += txn.amount
+            elif txn.txn_type == 'W':
+                balance -= txn.amount
+        return balance.quantize(Decimal('0.01'))
