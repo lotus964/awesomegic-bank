@@ -1,11 +1,1 @@
-#To run local
-python -m pip install pytest
 
-python -m pytest tests/
-
-pip install -U pytest
-
-python -m venv venv
-.\venv\Scripts\activate
-pip install pytest
-pytest tests/
