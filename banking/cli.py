@@ -1,7 +1,7 @@
 # cli.py
 
-from banking.bank import BankSystem
-from banking.transaction import Transaction
+from banking.bank import Bank
+from decimal import Decimal, InvalidOperation
 
 class CLI:
     def __init__(self):
