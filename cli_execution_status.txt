@@ -1,0 +1,66 @@
+C:\Users\Selvi\Documents\awesomegic-bank>python banking/cli.py
+Welcome to AwesomeGIC Bank! What would you like to do?
+[T] Input transactions
+[I] Define interest rules
+[P] Print statement
+[Q] Quit
+>T
+Please enter transaction details in <Date> <Account> <Type> <Amount> format
+(or enter blank to go back to main menu):
+>20230626 AC001 W 100.00
+Error: First transaction cannot be withdrawal
+>20230626 AC001 D 100.00
+Transaction 20230626-01 added successfully.
+Account: AC001
+| Date     | Txn Id      | Type | Amount | Balance |
+| 20230626 | 20230626-01 | D    |  100.00 |   100.00 |
+>20230626 AC001 W 100.00
+Transaction 20230626-02 added successfully.
+Account: AC001
+| Date     | Txn Id      | Type | Amount | Balance |
+| 20230626 | 20230626-01 | D    |  100.00 |   100.00 |
+| 20230626 | 20230626-02 | W    |  100.00 |     0.00 |
+>
+[T] Input transactions
+[I] Define interest rules
+[P] Print statement
+[Q] Quit
+>I
+Please enter interest rules details in <Date> <RuleId> <Rate in %> format
+(or enter blank to go back to main menu):
+>20230615 RULE03 2.20
+Interest rule RULE03 added for 20230615 with rate 2.20%
+Interest rules:
+| Date     | RuleId | Rate (%) |
+| 20230615 | RULE03 |     2.20 |
+>20230615 RULE01 2.20
+Interest rule RULE01 added for 20230615 with rate 2.20%
+Interest rules:
+| Date     | RuleId | Rate (%) |
+| 20230615 | RULE01 |     2.20 |
+>20230615 RULE02 2.20
+Interest rule RULE02 added for 20230615 with rate 2.20%
+Interest rules:
+| Date     | RuleId | Rate (%) |
+| 20230615 | RULE02 |     2.20 |
+>
+[T] Input transactions
+[I] Define interest rules
+[P] Print statement
+[Q] Quit
+>p
+Please enter account and month to generate the statement <Account> <Year><Month>
+(or enter blank to go back to main menu):
+>AC001 202306
+Account: AC001
+| Date     | Txn Id      | Type | Amount | Balance |
+| 20230626 | 20230626-01 | D    |  100.00 |   100.00 |
+| 20230626 | 20230626-02 | W    |  100.00 |     0.00 |
+>
+[T] Input transactions
+[I] Define interest rules
+[P] Print statement
+[Q] Quit
+>q
+Thank you for banking with AwesomeGIC Bank.
+Have a nice day!

@@ -1,0 +1,102 @@
+C:\Users\Selvi\Documents\awesomegic-bank>python -m pytest --collect-only
+=================================================================== test session starts ===================================================================
+platform win32 -- Python 3.13.1, pytest-8.4.1, pluggy-1.6.0
+rootdir: C:\Users\Selvi\Documents\awesomegic-bank
+collected 26 items
+
+<Dir awesomegic-bank>
+  <Package testing>
+    <Module test_account.py>
+      <Function test_add_deposit_transaction>
+      <Function test_add_withdrawal_transaction>
+      <Function test_withdrawal_without_deposit_raises_error>
+      <Function test_transaction_id_sequence>
+      <Function test_get_statement_for_month>
+      <Function test_add_interest>
+    <Module test_bank.py>
+      <Function test_add_transaction_creates_account>
+      <Function test_withdrawal_constraints>
+      <Function test_add_interest_rule>
+      <Function test_calculate_monthly_interest>
+      <Function test_statement_includes_interest>
+    <Module test_cli.py>
+      <Function test_quit_command_prints_exit_message>
+      <Function test_invalid_option_shows_error>
+      <Function test_handle_transactions_invalid_input>
+      <Function test_handle_interest_rules_invalid_input>
+    <Module test_e2e.py>
+      <Function test_e2e_transaction_deposit_and_withdrawal>
+      <Function test_e2e_interest_definition_and_statement>
+      <Function test_e2e_invalid_inputs_and_validation>
+    <Module test_interest_rule.py>
+      <Function test_valid_interest_rule>
+      <Function test_invalid_date_format>
+      <Function test_invalid_interest_rate_low>
+      <Function test_invalid_interest_rate_high>
+    <Module test_transaction.py>
+      <Function test_valid_transaction>
+      <Function test_invalid_date_format>
+      <Function test_invalid_txn_type>
+      <Function test_negative_amount>
+
+=============================================================== 26 tests collected in 0.12s ===============================================================
+
+C:\Users\Selvi\Documents\awesomegic-bank>python -m pytest testing\test_e2e.py
+=================================================================== test session starts ===================================================================
+platform win32 -- Python 3.13.1, pytest-8.4.1, pluggy-1.6.0
+rootdir: C:\Users\Selvi\Documents\awesomegic-bank
+collected 3 items
+
+testing\test_e2e.py ...                                                                                                                              [100%]
+
+==================================================================== 3 passed in 0.13s ====================================================================
+
+C:\Users\Selvi\Documents\awesomegic-bank>python -m pytest testing\test_account.py
+=================================================================== test session starts ===================================================================
+platform win32 -- Python 3.13.1, pytest-8.4.1, pluggy-1.6.0
+rootdir: C:\Users\Selvi\Documents\awesomegic-bank
+collected 6 items
+
+testing\test_account.py ......                                                                                                                       [100%]
+
+==================================================================== 6 passed in 0.01s ====================================================================
+
+C:\Users\Selvi\Documents\awesomegic-bank>python -m pytest testing\test_interest_rule.py
+=================================================================== test session starts ===================================================================
+platform win32 -- Python 3.13.1, pytest-8.4.1, pluggy-1.6.0
+rootdir: C:\Users\Selvi\Documents\awesomegic-bank
+collected 4 items
+
+testing\test_interest_rule.py ....                                                                                                                   [100%]
+
+==================================================================== 4 passed in 0.02s ====================================================================
+
+C:\Users\Selvi\Documents\awesomegic-bank>python -m pytest testing\test_transaction.py
+=================================================================== test session starts ===================================================================
+platform win32 -- Python 3.13.1, pytest-8.4.1, pluggy-1.6.0
+rootdir: C:\Users\Selvi\Documents\awesomegic-bank
+collected 4 items
+
+testing\test_transaction.py ....                                                                                                                     [100%]
+
+==================================================================== 4 passed in 0.02s ====================================================================
+
+C:\Users\Selvi\Documents\awesomegic-bank>python -m pytest testing\test_bank.py
+=================================================================== test session starts ===================================================================
+platform win32 -- Python 3.13.1, pytest-8.4.1, pluggy-1.6.0
+rootdir: C:\Users\Selvi\Documents\awesomegic-bank
+collected 5 items
+
+testing\test_bank.py .....                                                                                                                           [100%]
+
+==================================================================== 5 passed in 0.02s ====================================================================
+
+C:\Users\Selvi\Documents\awesomegic-bank>python -m pytest testing\test_cli.py
+=================================================================== test session starts ===================================================================
+platform win32 -- Python 3.13.1, pytest-8.4.1, pluggy-1.6.0
+rootdir: C:\Users\Selvi\Documents\awesomegic-bank
+collected 4 items
+
+testing\test_cli.py ....                                                                                                                             [100%]
+
+==================================================================== 4 passed in 0.12s ====================================================================
